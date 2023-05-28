@@ -24,7 +24,7 @@ services:
             - redis
 
     nginx:
-        image: nginx:alpine
+        image: nginx:latest
         container_name: dockravel-nginx
         restart: unless-stopped
         tty: true
@@ -40,21 +40,16 @@ services:
             - laravel
 
     db:
-        image: mysql
+        image: mysql:latest
         container_name: dockravel-mysql
         restart: always
-        tty: true
-        ports: 
-            - "3306:3306"
-        volumes: 
-            - ./mysql:/var/lib/mysql
         environment: 
-            MYSQL_DATABASE: `${DB_NAME}`
-            MYSQL_USER: ${DB_ROOT_USER}
-            MYSQL_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
             MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-            SERVICE_TAGS: dev
-            SERVICE_NAME: mysql
+        volumes: 
+            - ./dbdata:/var/lib/mysql
+        ports: 
+            - "4306:3306"
         networks: 
             - laravel
 
